@@ -24,19 +24,28 @@ public class TsvReader {
         try {
             studentArray = TsvReader.read("students.tsv");
             profArray = TsvReader.read("profs.tsv");
-
-            System.out.println("Students: ");
-            query(studentArray);
-            System.out.println("***********");
-            System.out.println("Professors: ");
-            query(profArray);
+            log();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+
+
+    /**
+     * Log to the console.
+     */
+    public static void log() {
+        System.out.println("Students: ");
+        query(studentArray);
+        System.out.println("***********");
+        System.out.println("Professors: ");
+        query(profArray);
+    }
+
     /**
      * Read the tsv file
+     *
      * @param fileName the name of the file
      * @return a 2D array
      * @throws IOException if the file does not exist.
@@ -56,11 +65,12 @@ public class TsvReader {
 
     /**
      * Just to check everything is in place by logging the array to the console.
+     *
      * @param strArray the 2D array
      */
     public static void query(String[][] strArray) {
         // ignore the header
-        for (int i = 1; i < strArray.length; i ++) {
+        for (int i = 1; i < strArray.length; i++) {
             // ignore the timestamp
             for (int j = 1; j < strArray[i].length; j++) {
                 System.out.println("[" + i + "][" + j + "]" + strArray[i][j]);
