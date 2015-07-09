@@ -12,11 +12,14 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
-public class Reader {
+/**
+ * Read the tsv input files
+ */
+public class TsvReader {
     public static void main(String[] args) {
         try {
-            String[][] studentArray = Reader.read("students.tsv");
-            String[][] profArray = Reader.read("profs.tsv");
+            String[][] studentArray = TsvReader.read("students.tsv");
+            String[][] profArray = TsvReader.read("profs.tsv");
 
             System.out.println("Students: ");
             query(studentArray);
