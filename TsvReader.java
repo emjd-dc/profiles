@@ -16,10 +16,13 @@ import java.util.List;
  * Read the tsv input files
  */
 public class TsvReader {
+    private static String[][] studentArray;
+    private static String[][] profArray;
+
     public static void main(String[] args) {
         try {
-            String[][] studentArray = TsvReader.read("students.tsv");
-            String[][] profArray = TsvReader.read("profs.tsv");
+            studentArray = TsvReader.read("students.tsv");
+            profArray = TsvReader.read("profs.tsv");
 
             System.out.println("Students: ");
             query(studentArray);
