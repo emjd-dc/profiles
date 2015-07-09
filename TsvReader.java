@@ -7,8 +7,10 @@
  */
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
@@ -24,13 +26,70 @@ public class TsvReader {
         try {
             studentArray = TsvReader.read("students.tsv");
             profArray = TsvReader.read("profs.tsv");
-            log();
+//            log();
+            writeStudents();
+            writeProfessors();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
 
+    /**
+     * Write Student HTML files
+     *
+     * @throws IOException
+     */
+    public static void writeStudents() throws IOException {
+        Path path = Paths.get("meta-student.html");
+        Charset charset = StandardCharsets.UTF_8;
+        // ignore the header
+        for (int i = 1; i < studentArray.length; i++) {
+            String content = new String(Files.readAllBytes(path), charset);
+
+            if (studentArray[i].length > 1) {
+                // ignore the timestamp
+                Path newPath = Paths.get(studentArray[i][1] + ".html");
+                for (int j = 1; j < studentArray[i].length; j++) {
+                    String rep = "<br />";
+                    content = content.replaceAll("PLACEHOLDER-" + j, studentArray[i][j]);
+                    content = content.replaceAll("PAGE-BREAK", rep);
+                }
+                if (studentArray[i].length <= 9) {
+                    for (int j = studentArray[i].length; j <= 9; j++) {
+
+                        content = content.replaceAll("PLACEHOLDER-" + j, "");
+                    }
+                }
+                Files.write(newPath, content.getBytes(charset));
+            }
+
+        }
+    }
+
+    /**
+     * Write Professor HTML files.
+     *
+     * @throws IOException
+     */
+    public static void writeProfessors() throws IOException {
+        Path path = Paths.get("meta-professor.html");
+        Charset charset = StandardCharsets.UTF_8;
+
+        // ignore the header
+        for (int i = 1; i < profArray.length; i++) {
+            String content = new String(Files.readAllBytes(path), charset);
+
+            if (profArray[i].length > 1) {
+                // ignore the timestamp
+                Path newPath = Paths.get(profArray[i][1] + ".html");
+                for (int j = 1; j < profArray[i].length; j++) {
+                    content = content.replaceAll("PLACEHOLDER-" + j, profArray[i][j]);
+                }
+                Files.write(newPath, content.getBytes(charset));
+            }
+        }
+    }
 
     /**
      * Log to the console.
