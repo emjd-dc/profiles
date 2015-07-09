@@ -14,6 +14,7 @@ import java.util.List;
 
 /**
  * Read the tsv input files
+ * bibtex converted with http://ref.lexique.org/
  */
 public class TsvReader {
     private static String[][] studentArray;
@@ -58,8 +59,10 @@ public class TsvReader {
      * @param strArray the 2D array
      */
     public static void query(String[][] strArray) {
-        for (int i = 0; i < strArray.length; i ++) {
-            for (int j = 0; j < strArray[i].length; j++) {
+        // ignore the header
+        for (int i = 1; i < strArray.length; i ++) {
+            // ignore the timestamp
+            for (int j = 1; j < strArray[i].length; j++) {
                 System.out.println("[" + i + "][" + j + "]" + strArray[i][j]);
             }
         }
