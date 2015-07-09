@@ -16,7 +16,13 @@ public class Reader {
     public static void main(String[] args) {
         try {
             String[][] studentArray = Reader.read("students.tsv");
+            String[][] profArray = Reader.read("profs.tsv");
+
+            System.out.println("Students: ");
             query(studentArray);
+            System.out.println("***********");
+            System.out.println("Professors: ");
+            query(profArray);
         } catch (IOException e) {
             e.printStackTrace();
         }
