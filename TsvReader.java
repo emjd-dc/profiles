@@ -59,14 +59,10 @@ public class TsvReader {
 
                     String value = studentArray[i][j];
 
-                    Date inputDate = null;
                     if (j == 5) {
-                        value = formatDateString(value, inputDate);
+                        value = formatDateString(value);
                     }
                     content = content.replaceAll("PLACEHOLDER-" + j, value);
-
-
-
                     content = content.replaceAll("PAGE-BREAK", rep);
                 }
                 if (studentArray[i].length <= 9) {
@@ -81,7 +77,8 @@ public class TsvReader {
         }
     }
 
-    private static String formatDateString(String value, Date inputDate) {
+    private static String formatDateString(String value) {
+        Date inputDate = null;
         value = value.replaceAll("/", "-");
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         try {
