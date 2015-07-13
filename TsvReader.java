@@ -12,6 +12,10 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -52,7 +56,17 @@ public class TsvReader {
                 Path newPath = Paths.get(studentArray[i][1] + ".html");
                 for (int j = 1; j < studentArray[i].length; j++) {
                     String rep = "<br />";
-                    content = content.replaceAll("PLACEHOLDER-" + j, studentArray[i][j]);
+
+                    String value = studentArray[i][j];
+
+                    Date inputDate = null;
+                    if (j == 5) {
+                        value = formatDateString(value, inputDate);
+                    }
+                    content = content.replaceAll("PLACEHOLDER-" + j, value);
+
+
+
                     content = content.replaceAll("PAGE-BREAK", rep);
                 }
                 if (studentArray[i].length <= 9) {
@@ -65,6 +79,21 @@ public class TsvReader {
             }
 
         }
+    }
+
+    private static String formatDateString(String value, Date inputDate) {
+        value = value.replaceAll("/", "-");
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        try {
+            inputDate = dateFormat.parse(value);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        SimpleDateFormat formatter = new SimpleDateFormat("MMMM yyyy");
+
+        value = formatter.format(inputDate);
+        return value;
     }
 
     /**
