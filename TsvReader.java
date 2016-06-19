@@ -26,6 +26,10 @@ public class TsvReader {
     private static String[][] studentArray;
     private static String[][] profArray;
 
+    private static String Static_Text_S3 = "Homepage: ";
+    private static String Static_Text_S9 = "Selected Publications ";
+
+
     public static void main(String[] args) {
         try {
             studentArray = TsvReader.read("students.tsv");
@@ -62,11 +66,16 @@ public class TsvReader {
                     if (j == 5) {
                         value = formatDateString(value);
                     }
-                    if (!value.trim().equals("")) {
-                        content = content.replaceAll("Static-Text-S" + j, "Homepage: ");
+                    if (!value.equals("") && value!=null) {
+                        if (j==3) {
+                            content = content.replaceAll("Static_Text_S3", Static_Text_S3);
+                        }
+                        if (j==9) {
+                            content = content.replaceAll("Static_Text_S9", Static_Text_S9);
+                        }
                         content = content.replaceAll("PLACEHOLDER-" + j, value);
                     } else {
-                        content = content.replaceAll("Static-Text-S" + j, "");
+                        content = content.replaceAll("Static_Text_S" + j, "");
                         content = content.replaceAll("PLACEHOLDER-" + j, "");
                     }
                     content = content.replaceAll("PAGE-BREAK", rep);
@@ -75,6 +84,7 @@ public class TsvReader {
                     for (int j = studentArray[i].length; j <= 9; j++) {
 
                         content = content.replaceAll("PLACEHOLDER-" + j, "");
+                        content = content.replaceAll("Static_Text_S" + j, "");
                     }
                 }
                 Files.write(newPath, content.getBytes(charset));
