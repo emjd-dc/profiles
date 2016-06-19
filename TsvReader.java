@@ -53,7 +53,7 @@ public class TsvReader {
 
             if (studentArray[i].length > 1) {
                 // ignore the timestamp
-                Path newPath = Paths.get(studentArray[i][1] + ".html");
+                Path newPath = Paths.get("profiles/students/"+studentArray[i][1] + ".html");
                 for (int j = 1; j < studentArray[i].length; j++) {
                     String rep = "<br />";
 
@@ -108,7 +108,7 @@ public class TsvReader {
 
             if (profArray[i].length > 1) {
                 // ignore the timestamp
-                Path newPath = Paths.get(profArray[i][1] + ".html");
+                Path newPath = Paths.get("profiles/profs/" + profArray[i][1] + ".html");
                 for (int j = 1; j < profArray[i].length; j++) {
                     content = content.replaceAll("PLACEHOLDER-" + j, profArray[i][j]);
                 }
