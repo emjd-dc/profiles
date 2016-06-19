@@ -80,7 +80,7 @@ public class TsvReader {
     private static String formatDateString(String value) {
         Date inputDate = null;
         value = value.replaceAll("/", "-");
-        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
         try {
             inputDate = dateFormat.parse(value);
         } catch (ParseException e) {
