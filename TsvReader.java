@@ -55,7 +55,7 @@ public class TsvReader {
                 // ignore the timestamp
                 Path newPath = Paths.get("profiles/students/"+studentArray[i][1] + ".html");
                 for (int j = 1; j < studentArray[i].length; j++) {
-                    String rep = "<br />";
+                    String rep = "<br /><br />";
 
                     String value = studentArray[i][j];
 
