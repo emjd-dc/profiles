@@ -62,7 +62,13 @@ public class TsvReader {
                     if (j == 5) {
                         value = formatDateString(value);
                     }
-                    content = content.replaceAll("PLACEHOLDER-" + j, value);
+                    if (!value.trim().equals("")) {
+                        content = content.replaceAll("Static-Text-S" + j, "Homepage: ");
+                        content = content.replaceAll("PLACEHOLDER-" + j, value);
+                    } else {
+                        content = content.replaceAll("Static-Text-S" + j, "");
+                        content = content.replaceAll("PLACEHOLDER-" + j, "");
+                    }
                     content = content.replaceAll("PAGE-BREAK", rep);
                 }
                 if (studentArray[i].length <= 9) {
