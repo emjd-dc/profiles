@@ -6,6 +6,7 @@
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -38,6 +39,7 @@ public class TsvReader {
             studentArray = TsvReader.read("students.tsv");
             profArray = TsvReader.read("profs.tsv");
             log(isDebugEnabled);
+            createDirectories();
             writeStudents();
             writeProfessors();
         } catch (IOException e) {
@@ -45,6 +47,19 @@ public class TsvReader {
         }
     }
 
+
+    public static void createDirectories() {
+        createDirectory("profiles");
+        createDirectory("profiles" + File.separator + "students");
+        createDirectory("profiles" + File.separator + "profs");
+    }
+
+    public static void createDirectory(String directoryName){
+        File file = new File(directoryName);
+        if (!file.exists()) {
+            file.mkdir();
+        }
+    }
 
     /**
      * Write Student HTML files
