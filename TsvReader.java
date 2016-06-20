@@ -27,14 +27,17 @@ public class TsvReader {
     private static String[][] profArray;
 
     private static String Static_Text_S3 = "Homepage: ";
-    private static String Static_Text_S9 = "Selected Publications ";
+    private static String Static_Text_S9 = "Selected Publications";
+
+    private static boolean withHeaders = false;
+    private static boolean isDebugEnabled = false;
 
 
     public static void main(String[] args) {
         try {
             studentArray = TsvReader.read("students.tsv");
             profArray = TsvReader.read("profs.tsv");
-//            log();
+            log(isDebugEnabled);
             writeStudents();
             writeProfessors();
         } catch (IOException e) {
@@ -49,7 +52,12 @@ public class TsvReader {
      * @throws IOException
      */
     public static void writeStudents() throws IOException {
-        Path path = Paths.get("meta-student.html");
+        Path path;
+        if (withHeaders) {
+            path = Paths.get("meta-student-with-headers.html");
+        } else {
+            path = Paths.get("meta-student.html");
+        }
         Charset charset = StandardCharsets.UTF_8;
         // ignore the header
         for (int i = 1; i < studentArray.length; i++) {
@@ -59,7 +67,12 @@ public class TsvReader {
                 // ignore the timestamp
                 Path newPath = Paths.get("profiles/students/"+studentArray[i][1] + ".html");
                 for (int j = 1; j < studentArray[i].length; j++) {
-                    String rep = "<br /><br />";
+                    String rep;
+                    if (withHeaders) {
+                        rep = "<br /><br />";
+                    } else {
+                        rep = "\n\n";
+                    }
 
                     String value = studentArray[i][j];
 
@@ -115,7 +128,12 @@ public class TsvReader {
      * @throws IOException
      */
     public static void writeProfessors() throws IOException {
-        Path path = Paths.get("meta-professor.html");
+        Path path;
+        if (withHeaders) {
+            path = Paths.get("meta-professor-with-headers.html");
+        } else {
+            path = Paths.get("meta-professor.html");
+        }
         Charset charset = StandardCharsets.UTF_8;
 
         // ignore the header
@@ -136,12 +154,14 @@ public class TsvReader {
     /**
      * Log to the console.
      */
-    public static void log() {
-        System.out.println("Students: ");
-        query(studentArray);
-        System.out.println("***********");
-        System.out.println("Professors: ");
-        query(profArray);
+    public static void log(boolean isDebugEnabled) {
+        if (isDebugEnabled) {
+            System.out.println("Students: ");
+            query(studentArray);
+            System.out.println("***********");
+            System.out.println("Professors: ");
+            query(profArray);
+        }
     }
 
     /**
