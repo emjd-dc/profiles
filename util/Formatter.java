@@ -15,6 +15,8 @@
  */
 package util;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -38,5 +40,23 @@ public class Formatter {
 
         value = formatter.format(inputDate);
         return value;
+    }
+
+    /**
+     * Return the path to the file from the meta data
+     * @param isWithHeaders will the final html pages consist of headers
+     * @param baseName the basename of the meta file
+     * @return the path
+     */
+    public static Path chooseMetaFile(boolean isWithHeaders, String baseName) {
+        String fileName;
+        String headerExt = "-with-headers";
+        String ext = ".html";
+        if (isWithHeaders) {
+            fileName = baseName + headerExt + ext;
+        } else {
+            fileName = baseName + ext;
+        }
+        return Paths.get(fileName);
     }
 }

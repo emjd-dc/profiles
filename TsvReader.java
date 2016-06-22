@@ -8,6 +8,7 @@
 
 import util.DirectoryUtil;
 import util.Formatter;
+import util.ProfileConstants;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -25,19 +26,13 @@ public class TsvReader {
     private static String[][] studentArray;
     private static String[][] profArray;
 
-    private static String Static_Text_S3 = "Homepage: ";
-    private static String Static_Text_S9 = "Selected Publications";
-
-    private static boolean withHeaders = false;
-    private static boolean isDebugEnabled = false;
-
-
     public static void main(String[] args) {
         try {
             studentArray = TsvReader.read("students.tsv");
             profArray = TsvReader.read("profs.tsv");
-            log(isDebugEnabled);
+            log(ProfileConstants.isDebugEnabled);
             DirectoryUtil.createDirectories();
+            writeAboutUs();
             writeStudents();
             writeProfessors();
         } catch (IOException e) {
@@ -47,17 +42,20 @@ public class TsvReader {
 
 
     /**
-     * Write Student HTML files
+     * Write About Us page
      *
      * @throws IOException
      */
+    public static void writeAboutUs() throws IOException {
+    }
+
+        /**
+         * Write Student HTML files
+         *
+         * @throws IOException
+         */
     public static void writeStudents() throws IOException {
-        Path path;
-        if (withHeaders) {
-            path = Paths.get("meta-student-with-headers.html");
-        } else {
-            path = Paths.get("meta-student.html");
-        }
+        Path path = Formatter.chooseMetaFile(ProfileConstants.withHeaders, "meta-student");
         Charset charset = StandardCharsets.UTF_8;
         // ignore the header
         for (int i = 1; i < studentArray.length; i++) {
@@ -68,7 +66,7 @@ public class TsvReader {
                 Path newPath = Paths.get("profiles/students/"+studentArray[i][1] + ".html");
                 for (int j = 1; j < studentArray[i].length; j++) {
                     String rep;
-                    if (withHeaders) {
+                    if (ProfileConstants.withHeaders) {
                         rep = "<br /><br />";
                     } else {
                         rep = "\n\n";
@@ -81,10 +79,10 @@ public class TsvReader {
                     }
                     if (!value.equals("") && value!=null) {
                         if (j==3) {
-                            content = content.replaceAll("Static_Text_S3", Static_Text_S3);
+                            content = content.replaceAll("Static_Text_S3", ProfileConstants.Static_Text_S3);
                         }
                         if (j==9) {
-                            content = content.replaceAll("Static_Text_S9", Static_Text_S9);
+                            content = content.replaceAll("Static_Text_S9", ProfileConstants.Static_Text_S9);
                         }
                         content = content.replaceAll("PLACEHOLDER-" + j, value);
                     } else {
@@ -112,12 +110,7 @@ public class TsvReader {
      * @throws IOException
      */
     public static void writeProfessors() throws IOException {
-        Path path;
-        if (withHeaders) {
-            path = Paths.get("meta-professor-with-headers.html");
-        } else {
-            path = Paths.get("meta-professor.html");
-        }
+        Path path = Formatter.chooseMetaFile(ProfileConstants.withHeaders, "meta-professor");
         Charset charset = StandardCharsets.UTF_8;
 
         // ignore the header
