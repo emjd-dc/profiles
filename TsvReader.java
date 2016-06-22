@@ -6,17 +6,15 @@
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  */
 
-import java.io.File;
+import util.DirectoryUtil;
+import util.Formatter;
+
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -39,7 +37,7 @@ public class TsvReader {
             studentArray = TsvReader.read("students.tsv");
             profArray = TsvReader.read("profs.tsv");
             log(isDebugEnabled);
-            createDirectories();
+            DirectoryUtil.createDirectories();
             writeStudents();
             writeProfessors();
         } catch (IOException e) {
@@ -47,19 +45,6 @@ public class TsvReader {
         }
     }
 
-
-    public static void createDirectories() {
-        createDirectory("profiles");
-        createDirectory("profiles" + File.separator + "students");
-        createDirectory("profiles" + File.separator + "profs");
-    }
-
-    public static void createDirectory(String directoryName){
-        File file = new File(directoryName);
-        if (!file.exists()) {
-            file.mkdir();
-        }
-    }
 
     /**
      * Write Student HTML files
@@ -92,7 +77,7 @@ public class TsvReader {
                     String value = studentArray[i][j];
 
                     if (j == 5) {
-                        value = formatDateString(value);
+                        value = Formatter.formatDateString(value);
                     }
                     if (!value.equals("") && value!=null) {
                         if (j==3) {
@@ -119,22 +104,6 @@ public class TsvReader {
             }
 
         }
-    }
-
-    private static String formatDateString(String value) {
-        Date inputDate = null;
-        value = value.replaceAll("/", "-");
-        DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
-        try {
-            inputDate = dateFormat.parse(value);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        SimpleDateFormat formatter = new SimpleDateFormat("MMMM yyyy");
-
-        value = formatter.format(inputDate);
-        return value;
     }
 
     /**
