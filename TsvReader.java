@@ -32,9 +32,9 @@ public class TsvReader {
             profArray = TsvReader.read("profs.tsv");
             log(ProfileConstants.isDebugEnabled);
             DirectoryUtil.createDirectories();
-            writeAboutUs();
             writeStudents();
             writeProfessors();
+            writeAboutUs();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -47,6 +47,23 @@ public class TsvReader {
      * @throws IOException
      */
     public static void writeAboutUs() throws IOException {
+        Path profInitPath =  Paths.get("meta-about-us-professor.html");
+        Charset charset = StandardCharsets.UTF_8;
+
+        Path outPath = Paths.get("profiles/" + "about-us.html");
+        String content = "";
+
+        for (int i = 1; i < profArray.length; i++) {
+            if (profArray[i].length > 1) {
+                String profTemp = new String(Files.readAllBytes(profInitPath), charset);
+                for (int j = 1; j < profArray[i].length; j++) {
+                    profTemp = profTemp.replaceAll("PLACEHOLDER-" + j, profArray[i][j]);
+                }
+                profTemp = profTemp.replaceAll("PLACEHOLDER-0",Formatter.replaceSpace(profArray[i][1]));
+                content+= profTemp + "\n";
+            }
+        }
+        Files.write(outPath, content.getBytes(charset));
     }
 
         /**
@@ -57,7 +74,6 @@ public class TsvReader {
     public static void writeStudents() throws IOException {
         Path path = Formatter.chooseMetaFile(ProfileConstants.withHeaders, "meta-student");
         Charset charset = StandardCharsets.UTF_8;
-        // ignore the header
         for (int i = 1; i < studentArray.length; i++) {
             String content = new String(Files.readAllBytes(path), charset);
 
@@ -113,7 +129,6 @@ public class TsvReader {
         Path path = Formatter.chooseMetaFile(ProfileConstants.withHeaders, "meta-professor");
         Charset charset = StandardCharsets.UTF_8;
 
-        // ignore the header
         for (int i = 1; i < profArray.length; i++) {
             String content = new String(Files.readAllBytes(path), charset);
 

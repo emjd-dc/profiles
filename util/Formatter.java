@@ -59,4 +59,13 @@ public class Formatter {
         }
         return Paths.get(fileName);
     }
+
+    /**
+     * Replaces space in a string with a dash
+     * @param in original string
+     * @return replaced out string
+     */
+    public static String replaceSpace(String in) {
+        return in.replace(" ", "-");
+    }
 }
