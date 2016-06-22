@@ -51,7 +51,7 @@ public class TsvReader {
         Charset charset = StandardCharsets.UTF_8;
 
         Path outPath = Paths.get("profiles/" + "about-us.html");
-        String content = "";
+        String content = "<h2>Professors</h2>\n";
 
         for (int i = 1; i < profArray.length; i++) {
             if (profArray[i].length > 1) {
@@ -63,6 +63,50 @@ public class TsvReader {
                 content+= profTemp + "\n";
             }
         }
+
+        content += "<h2>Students</h2>\n";
+        Path studentInitPath =  Paths.get("meta-about-us-student.html");
+
+        for (int i = 1; i < studentArray.length; i++) {
+            String studentTemp = new String(Files.readAllBytes(studentInitPath), charset);
+
+            if (studentArray[i].length > 1) {
+                for (int j = 1; j < studentArray[i].length; j++) {
+                    String rep = "\n\n";
+
+
+                    String value = studentArray[i][j];
+
+                    if (j == 5) {
+                        value = Formatter.formatDateString(value);
+                    }
+                    if (!value.equals("") && value!=null) {
+                        if (j==3) {
+                            studentTemp = studentTemp.replaceAll("Static_Text_S3", ProfileConstants.Static_Text_S3);
+                        }
+                        if (j==9) {
+                            studentTemp = studentTemp.replaceAll("Static_Text_S9", ProfileConstants.Static_Text_S9);
+                        }
+                        studentTemp = studentTemp.replaceAll("PLACEHOLDER-" + j, value);
+                    } else {
+                        studentTemp = studentTemp.replaceAll("Static_Text_S" + j, "");
+                        studentTemp = studentTemp.replaceAll("PLACEHOLDER-" + j, "");
+                    }
+                    studentTemp = studentTemp.replaceAll("PAGE-BREAK", rep);
+                }
+                if (studentArray[i].length <= 9) {
+                    for (int j = studentArray[i].length; j <= 9; j++) {
+
+                        studentTemp = studentTemp.replaceAll("PLACEHOLDER-" + j, "");
+                        studentTemp = studentTemp.replaceAll("Static_Text_S" + j, "");
+                    }
+                }
+                studentTemp = studentTemp.replaceAll("PLACEHOLDER-0",Formatter.replaceSpace(studentArray[i][1]));
+                content+= studentTemp + "\n";
+            }
+
+        }
+
         Files.write(outPath, content.getBytes(charset));
     }
 
