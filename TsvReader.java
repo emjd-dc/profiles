@@ -60,11 +60,11 @@ public class TsvReader {
                     profTemp = profTemp.replaceAll("PLACEHOLDER-" + j, profArray[i][j]);
                 }
                 profTemp = profTemp.replaceAll("PLACEHOLDER-0",Formatter.replaceSpace(profArray[i][1]));
-                content+= profTemp + "\n";
+                content+= profTemp + "\n\n";
             }
         }
 
-        content += "<h2>Students</h2>\n";
+        content += "\n<h2>Students</h2>\n";
         Path studentInitPath =  Paths.get("meta-about-us-student.html");
 
         for (int i = 1; i < studentArray.length; i++) {
@@ -102,7 +102,7 @@ public class TsvReader {
                     }
                 }
                 studentTemp = studentTemp.replaceAll("PLACEHOLDER-0",Formatter.replaceSpace(studentArray[i][1]));
-                content+= studentTemp + "\n";
+                content+= studentTemp + "\n\n";
             }
 
         }
