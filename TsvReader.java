@@ -77,6 +77,14 @@ public class TsvReader {
 
                     String value = studentArray[i][j];
 
+                    if (j==4) {
+                        if (!value.equals("") && value!=null) {
+                            studentTemp = studentTemp.replaceAll("PLACEHOLDER-4", "<img src=\"PLACEHOLDER-4\" alt=\"\" height=\"200\" />");
+                        } else {
+                            studentTemp = studentTemp.replaceAll("PLACEHOLDER-4","");
+                        }
+                    }
+
                     if (j == 5) {
                         value = Formatter.formatDateString(value);
                     }
