@@ -77,13 +77,7 @@ public class TsvReader {
 
                     String value = studentArray[i][j];
 
-                    if (j==4) {
-                        if (!value.equals("") && value!=null) {
-                            studentTemp = studentTemp.replaceAll("PLACEHOLDER-4", "<img src=\"PLACEHOLDER-4\" alt=\"\" height=\"200\" />");
-                        } else {
-                            studentTemp = studentTemp.replaceAll("PLACEHOLDER-4","");
-                        }
-                    }
+                    studentTemp = refactorImages(studentTemp, j, value);
 
                     if (j == 5) {
                         value = Formatter.formatDateString(value);
@@ -118,7 +112,29 @@ public class TsvReader {
         Files.write(outPath, content.getBytes(charset));
     }
 
-        /**
+    private static String refactorImages(String studentTemp, int j, String value) {
+        if (j==4) {
+            if (!value.equals("") && value!=null) {
+                studentTemp = studentTemp.replaceAll("PLACEHOLDER-4", "<img src=\"PLACEHOLDER-4\" alt=\"\" height=\"200\" />");
+            } else {
+                studentTemp = studentTemp.replaceAll("PLACEHOLDER-4","");
+            }
+        }
+        return studentTemp;
+    }
+
+    private static String refactorImagesAlignRight(String studentTemp, int j, String value) {
+        if (j==4) {
+            if (!value.equals("") && value!=null) {
+                studentTemp = studentTemp.replaceAll("PLACEHOLDER-4", "<img src=\"PLACEHOLDER-4\" alt=\"\" height=\"200\" align=\"right\" />\n");
+            } else {
+                studentTemp = studentTemp.replaceAll("PLACEHOLDER-4","");
+            }
+        }
+        return studentTemp;
+    }
+
+    /**
          * Write Student HTML files
          *
          * @throws IOException
@@ -141,6 +157,8 @@ public class TsvReader {
                     }
 
                     String value = studentArray[i][j];
+
+                    content = refactorImagesAlignRight(content, j, value);
 
                     if (j == 5) {
                         value = Formatter.formatDateString(value);
