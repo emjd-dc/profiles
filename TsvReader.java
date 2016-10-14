@@ -16,7 +16,11 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Read the tsv input files
@@ -47,6 +51,8 @@ public class TsvReader {
      * @throws IOException
      */
     public static void writeAboutUs() throws IOException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM yyyy", Locale.ENGLISH);
+
         Path profInitPath =  Paths.get("meta-about-us-professor.html");
         Charset charset = StandardCharsets.UTF_8;
 
@@ -80,7 +86,7 @@ public class TsvReader {
                     studentTemp = refactorImages(studentTemp, j, value);
 
                     if (j == 5) {
-                        value = Formatter.formatDateString(value);
+                        value = dateFormat.format(new Date(value));
                     }
                     if (!value.equals("") && value!=null) {
                         if (j==3) {
@@ -140,6 +146,7 @@ public class TsvReader {
          * @throws IOException
          */
     public static void writeStudents() throws IOException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM yyyy", Locale.ENGLISH);
         Path path = Formatter.chooseMetaFile(ProfileConstants.withHeaders, "meta-student");
         Charset charset = StandardCharsets.UTF_8;
         for (int i = 1; i < studentArray.length; i++) {
@@ -161,7 +168,7 @@ public class TsvReader {
                     content = refactorImagesAlignRight(content, j, value);
 
                     if (j == 5) {
-                        value = Formatter.formatDateString(value);
+                        value = dateFormat.format(new Date(value));
                     }
                     if (!value.equals("") && value!=null) {
                         if (j==3) {
